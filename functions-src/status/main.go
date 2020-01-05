@@ -1,10 +1,8 @@
 package main
 
 import (
-	"bytes"
 	"context"
 	"encoding/json"
-	"html/template"
 	"os"
 	"sort"
 	"sync"
@@ -13,17 +11,6 @@ import (
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
 )
-
-const tplData = `{{ range . }}
-<div class="check">
-<div class="state state-{{ .StateClass }}">{{ .State }}</div>
-<div class="service">{{ .Service }}</div>
-<div class="uptime">{{ .Uptime | printf "%.03f"}} %</div>
-</div>
-{{ end }}
-`
-
-var tpl = template.Must(template.New("index.html").Parse(tplData))
 
 var (
 	apiKey        = os.Getenv("UPDOWN_APIKEY")
@@ -38,9 +25,6 @@ var (
 )
 
 func main() {
-	// if cs, err := currentStatus(apiKey, domain); err == nil {
-	// 	tpl.Execute(os.Stdout, cs)
-	// }
 	lambda.Start(handler)
 }
 
@@ -49,13 +33,12 @@ func handler(ctx context.Context, request events.APIGatewayProxyRequest) (*event
 	if err != nil {
 		return nil, err
 	}
-	bs, _ := json.MarshalIndent(ss, "", " ")
 	return &events.APIGatewayProxyResponse{
 		StatusCode: 200,
 		Headers: map[string]string{
 			"Content-Type": "application/json; charset=utf-8",
 		},
-		Body: string(bs),
+		Body: ss,
 	}, nil
 }
 
@@ -80,12 +63,12 @@ func currentStatus(apiKey, domain string) (string, error) {
 
 	checks = filterPublicDomain(checks, domain)
 	status := sortedStatus(checks)
-	buf := new(bytes.Buffer)
-	if err := tpl.Execute(buf, status); err != nil {
+	bs, err := json.Marshal(status)
+	if err != nil {
 		return "", err
 	}
 
-	cache = buf.String()
+	cache = string(bs)
 	cacheTime = time.Now()
 	return cache, nil
 }
