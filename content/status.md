@@ -1,14 +1,12 @@
 # Status
 
-<div id="status-container">
-Loading current service status...
+<script type="text/lodash-template" id="status-template">
+<div class="check">
+    <div class="state"><%= OK %></div>
+    <div class="service"><%= Service %></div>
+    <div class="uptime"><%= Uptime %></div>
 </div>
-<script>
-function reqListener () {
-    document.getElementById('status-container').innerHTML = this.responseText;
-}
-var r = new XMLHttpRequest();
-r.addEventListener("load", reqListener);
-r.open("GET", "/.netlify/functions/status");
-r.send();
 </script>
+
+<div id="status-container">
+</div>
