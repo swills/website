@@ -9,6 +9,7 @@
         $.each(ss, function (_, s) {
             s.State = s.OK ? 'Up' : 'Down'
             s.StateClass = s.OK ? 'state-up' : 'state-down'
+            s.BadgeClass = s.OK ? 'badge-success' : 'badge-danger'
             ctr.append(tplFn(s))
         })
     })
