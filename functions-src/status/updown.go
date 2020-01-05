@@ -55,6 +55,20 @@ func (c check) status() status {
 	}
 }
 
+func (s status) State() string {
+	if s.OK {
+		return "OK"
+	}
+	return "Down"
+}
+
+func (s status) StateClass() string {
+	if s.OK {
+		return "up"
+	}
+	return "down"
+}
+
 func getChecks(apiKey string) ([]check, error) {
 	var res []check
 	client := resty.New()

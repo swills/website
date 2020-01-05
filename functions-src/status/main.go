@@ -1,8 +1,10 @@
 package main
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
+	"html/template"
 	"os"
 	"sort"
 	"sync"
@@ -12,6 +14,17 @@ import (
 	"github.com/aws/aws-lambda-go/lambda"
 )
 
+const tplData = `{{ range . }}
+<div class="check">
+<div class="state state-{{ .StateClass }}">{{ .State }}</div>
+<div class="service">{{ .Service }}</div>
+<div class="uptime">{{ .Uptime | printf "%.03f"}} %</div>
+</div>
+{{ end }}
+`
+
+var tpl = template.Must(template.New("index.html").Parse(tplData))
+
 var (
 	apiKey        = os.Getenv("UPDOWN_APIKEY")
 	domain        = os.Getenv("UPDOWN_DOMAIN")
@@ -19,12 +32,15 @@ var (
 )
 
 var (
-	cache     []status
+	cache     string
 	cacheTime time.Time
 	cacheMut  sync.RWMutex
 )
 
 func main() {
+	// if cs, err := currentStatus(apiKey, domain); err == nil {
+	// 	tpl.Execute(os.Stdout, cs)
+	// }
 	lambda.Start(handler)
 }
 
@@ -43,7 +59,7 @@ func handler(ctx context.Context, request events.APIGatewayProxyRequest) (*event
 	}, nil
 }
 
-func currentStatus(apiKey, domain string) ([]status, error) {
+func currentStatus(apiKey, domain string) (string, error) {
 	cacheMut.RLock()
 	if time.Since(cacheTime) < cacheDuration {
 		cacheMut.RUnlock()
@@ -59,11 +75,17 @@ func currentStatus(apiKey, domain string) ([]status, error) {
 
 	checks, err := getChecks(apiKey)
 	if err != nil {
-		return nil, err
+		return "", err
 	}
 
 	checks = filterPublicDomain(checks, domain)
-	cache = sortedStatus(checks)
+	status := sortedStatus(checks)
+	buf := new(bytes.Buffer)
+	if err := tpl.Execute(buf, status); err != nil {
+		return "", err
+	}
+
+	cache = buf.String()
 	cacheTime = time.Now()
 	return cache, nil
 }
