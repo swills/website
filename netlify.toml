@@ -1,9 +1,12 @@
 [build]
   publish = "_site"
   command = "./build.sh"
+  functions = "functions"
 
 [build.environment]
   HUGO_VERSION = "0.60.1"
+  GO_VERSION = "1.13.3"
+  UPDOWN_DOMAIN = "syncthing.net
 
 [[redirects]]
   from = "/security.html"
