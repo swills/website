@@ -40,6 +40,7 @@ type status struct {
 	LastCheck time.Time
 	OK        bool
 	Uptime    float64
+	Token     string
 }
 
 func (c check) status() status {
@@ -52,6 +53,7 @@ func (c check) status() status {
 		OK:        !c.Down,
 		Uptime:    c.Uptime,
 		LastCheck: c.LastCheckAt,
+		Token:     c.Token,
 	}
 }
 

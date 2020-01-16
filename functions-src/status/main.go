@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"os"
 	"sort"
 	"sync"
@@ -25,6 +26,7 @@ var (
 )
 
 func main() {
+	fmt.Println(currentStatus(apiKey, domain))
 	lambda.Start(handler)
 }
 
@@ -36,7 +38,8 @@ func handler(ctx context.Context, request events.APIGatewayProxyRequest) (*event
 	return &events.APIGatewayProxyResponse{
 		StatusCode: 200,
 		Headers: map[string]string{
-			"Content-Type": "application/json; charset=utf-8",
+			"Content-Type":  "application/json; charset=utf-8",
+			"Cache-Control": "public, s-maxage=300",
 		},
 		Body: ss,
 	}, nil

@@ -78,3 +78,13 @@ img.logo {
 .text-white a {
     color: #2bf;
 }
+
+.uptime {
+    text-align: right;
+}
+.status-badge {
+    padding: 6pt;
+    font-size: 100%;
+    text-align: right;
+    font-weight: normal;
+}
