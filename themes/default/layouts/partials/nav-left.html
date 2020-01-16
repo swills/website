@@ -5,4 +5,6 @@
 <a class="nav-item nav-link {{ if eq .RelPermalink (relref . "security.md" | string) }}active{{ end }}"
     href="{{ relref . "security.md" }}"><i class="fa fa-shield-alt"></i>&ensp;Security</a>
 <a class="nav-item nav-link {{ if eq .RelPermalink (relref . "foundation.md" | string) }}active{{ end }}"
-    href="{{ relref . "foundation.md" }}"><i class="fa fa-circle"></i>&ensp;Foundation</a>
+    href="{{ relref . "foundation.md" }}"><i class="fa fa-user-friends"></i>&ensp;Foundation</a>
+<a class="nav-item nav-link {{ if eq .RelPermalink (relref . "status.md" | string) }}active{{ end }}"
+    href="{{ relref . "status.md" }}"><i class="fa fa-bell"></i>&ensp;Status</a>
