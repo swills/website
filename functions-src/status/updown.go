@@ -52,7 +52,7 @@ func (c check) status() status {
 		Service:   service,
 		OK:        !c.Down,
 		Uptime:    c.Uptime,
-		LastCheck: c.LastCheckAt.UTC().Format("2006-01-02 15:04Z"),
+		LastCheck: c.LastCheckAt.UTC().Format("2006-01-02 15:04:05Z"),
 		Token:     c.Token,
 	}
 }
