@@ -8,7 +8,7 @@
     </div>
     <div class="service col">
         <b><%= Service %></b><br>
-        <a href="https://updown.io/<%= Token %>"><small><%= LastCheck %></small></a>
+        <small><span class="text-muted">Last check at</span> <%= LastCheck %> &middot; <a href="https://updown.io/<%= Token %>">Detailed status</a></small>
     </div>
     <div class="uptime col-3 d-none d-sm-block">
         <span class="badge status-badge <%= UptimeBadgeClass %>"><%= Uptime %> %</span>
