@@ -1,0 +1,15 @@
+{{ $isFoundation := eq .RelPermalink (relref . "foundation" | string) }}
+{{ $isDonations := eq .RelPermalink (relref . "donations" | string) }}
+{{ $isProject := not (or $isFoundation $isDonations) }}
+
+<div class="navbar-nav mr-auto mt-2 mt-md-0">
+    <a class="nav-item nav-link {{ if $isProject }}active{{ end }}" href="/"><i class="fa fa-project-diagram"></i>&ensp;Project</a>
+    <a class="nav-item nav-link {{ if $isFoundation }}active{{ end }}" href="{{ relref . "foundation.md" }}"><i class="fa fa-user-friends"></i>&ensp;Foundation</a>
+</div>
+
+<div class="navbar-nav">
+    <a class="nav-item nav-link" href="https://docs.syncthing.net/"> <i class="fa fa-book"></i>&ensp;Docs</a>
+    <a class="nav-item nav-link" href="https://forum.syncthing.net/"> <i class="fa fa-comments"></i>&ensp;Forum</a>
+    <a class="nav-item nav-link" href="https://github.com/syncthing/"> <i class="fa fa-code-branch"></i>&ensp;Code</a>
+    <a class="nav-item nav-link {{ if hasPrefix .RelPermalink (relref . "donations" | string) }}active{{ end }}" href="{{ relref . "donations" }}"><i class="fa fa-heart text-danger"></i>&ensp;Donations</a>
+</div>

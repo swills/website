@@ -88,3 +88,11 @@ img.logo {
     text-align: right;
     font-weight: normal;
 }
+
+.nav .nav-link.active {
+    color:#000;
+}
+
+.nav .nav-link:not(.active), .navbar-light .navbar-nav .nav-link  {
+    color: rgba(0,0,0,.5);
+}

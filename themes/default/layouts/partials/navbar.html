@@ -1,3 +1,7 @@
+{{ $isFoundation := eq .RelPermalink (relref . "foundation" | string) }}
+{{ $isDonations := eq .RelPermalink (relref . "donations" | string) }}
+{{ $isProject := not (or $isFoundation $isDonations) }}
+
 <nav class="navbar navbar-expand-lg bg-light navbar-light">
     <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNav"
         aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -5,11 +9,12 @@
     </button>
 
     <div class="collapse navbar-collapse" id="navbarNav">
-        <div class="navbar-nav mr-auto mt-2 mt-md-0">
-            {{ partial "nav-left.html" . }}
-        </div>
-        <div class="navbar-nav">
-            {{ partial "nav-right.html" . }}
-        </div>
+        {{ partial "nav-upper.html" . }}
     </div>
 </nav>
+
+{{ if $isProject }}
+<nav class="nav flex-column flex-sm-row mt-2 bg-light">
+    {{ partial "nav-inner.html" . }}
+</nav>
+{{ end }}

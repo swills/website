@@ -1,5 +1,5 @@
 {{ $img := .Page.Resources.GetMatch (.Get "bgResource") }}
 {{ $img = $img.Resize "1500x 50q" }}
-<div class="jumbotron mt-1 mb-4 text-white bg-dark" style="background-image: url({{$img.RelPermalink}});">
+<div class="jumbotron mt-2 mb-4 text-white bg-dark" style="background-image: url({{$img.RelPermalink}});">
     {{.Inner}}
 </div>
